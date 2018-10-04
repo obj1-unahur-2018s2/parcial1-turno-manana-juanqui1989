@@ -1,0 +1,66 @@
+import profesionales.*
+import Universidades.*
+import EmpresasDeServicios.*
+describe "group of tests" {
+	
+	var universidadDeSanMartin = new Universidad()
+	var universidadDeRosario = new Universidad()
+	var universidadDeCorrientes = new Universidad()
+	var universidadDeHurlingham = new Universidad()
+	
+	var juana = new ProfesionalVinculado()
+	var melina = new ProfesionalAsociado()
+	var rocio = new ProfesionalLibre()
+	var luciana = new ProfesionalLibre()
+	
+	var empresa1 = new EmpresaDeServicios()
+	
+	fixture{
+		universidadDeSanMartin.setProvincia("San Martin")
+		universidadDeSanMartin.setHonorariosRecomendados(3500)
+		
+		universidadDeRosario.setProvincia("Santa Fe")
+		universidadDeRosario.setHonorariosRecomendados(2800)
+		
+		universidadDeCorrientes.setProvincia("Corrientes")
+		universidadDeCorrientes.setHonorariosRecomendados(4200)
+		
+		universidadDeHurlingham.setProvincia("Hurlingham")
+		universidadDeHurlingham.setHonorariosRecomendados(8800)
+		
+		juana.universidad(universidadDeRosario)
+		melina.universidad(universidadDeCorrientes)
+		rocio.universidad(universidadDeHurlingham)
+		rocio.setProvinciasDondePuedeTrabajar("Santa Fe")
+		rocio.setProvinciasDondePuedeTrabajar("Cordoba")
+		rocio.setProvinciasDondePuedeTrabajar("Buenos Aires")
+		rocio.setHonorariosPorHora(5000)
+		luciana.universidad( universidadDeRosario)
+		luciana.setProvinciasDondePuedeTrabajar("Santa Fe")
+		luciana.setProvinciasDondePuedeTrabajar("Entre Rios")
+		luciana.setHonorariosPorHora(3200)
+		
+		empresa1.setHonorariosDeReferencia(3500)
+		empresa1.setContratarEmpleado(juana)
+		empresa1.setContratarEmpleado(melina)
+		empresa1.setContratarEmpleado(rocio)
+		empresa1.setContratarEmpleado(luciana)
+		
+		
+		
+	}
+	test "etapa1" {
+
+		assert.equals(#{rocio},empresa1.getProfesionalesCaros())
+		assert.equals(#{universidadDeHurlingham,universidadDeRosario,universidadDeCorrientes},empresa1.getUniversidadesFormadoras())
+		assert.equals(juana, empresa1.getProfesionalMasBarato())
+		//assert.that(empresa1.getProvinciaCubierta("Cordoba"))
+		//assert.that(empresa1.getProvinciaCubierta("Santa fe"))
+		//assert.notThat(empresa1.getProvinciaCubierta("Misiones"))
+		assert.equals(1,empresa1.getEmpleadosQueEstudiaronEn(universidadDeHurlingham))
+		assert.equals(2,empresa1.getEmpleadosQueEstudiaronEn(universidadDeRosario))
+		assert.equals(0,empresa1.getEmpleadosQueEstudiaronEn(universidadDeSanMartin))
+		
+		
+	}
+}
